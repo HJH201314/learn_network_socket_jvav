@@ -52,7 +52,11 @@ public class MyClient {
                     while (!socket.isClosed()) {
                         if (inputStream.available() <= 0) continue;
                         bytesRead = inputStream.read(buffer);
-                        listener.onReceive(new String(buffer, 0, bytesRead));
+                        String msg = new String(buffer, 0, bytesRead);
+                        listener.onReceive(msg);
+                        if (msg.equals("bye")) {
+                            stop();
+                        }
                     }
                 } catch (IOException ignored) {}
             });
@@ -72,6 +76,7 @@ public class MyClient {
         try {
             if (outputStream != null) {
                 outputStream.write(message.getBytes());
+                outputStream.flush();
                 return true;
             } else return false;
         } catch (IOException ignored) {
@@ -100,7 +105,6 @@ public class MyClient {
         }
         // receive response
         String response = receive();
-        System.out.println("here:" + response);
         boolean result = response.equals("FILE OK");
         listener.onFileSent(file.getName(), result);
         return result;

@@ -125,7 +125,6 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
                         client.sendMsg("time");
                     } else if (cmd.startsWith("exit")) {
                         client.sendMsg("bye");
-                        //client.stop();
                     } else if (cmd.startsWith("file")) {
                         JFileChooser fileChooser = new JFileChooser();
                         fileChooser.showOpenDialog(container);
@@ -171,12 +170,7 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
 
     @Override
     public void onReceive(String message) {
-        if (Objects.equals(message, "bye")) {
-            client.stop();
-            log("Connection closed.");
-        } else {
-            log("[Server] " + message);
-        }
+        log("[Server] " + message);
     }
 
     @Override

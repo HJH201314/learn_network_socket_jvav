@@ -104,13 +104,10 @@ public class MyServer {
      * Close all client connections.
      */
     public void closeAll() {
-        try {
-            for (ClientHandler client : clients.values()) {
-                client.getSocket().close();
-                client.interrupt();
-            }
-            clients.clear();
-        } catch (IOException ignore) {}
+        for (ClientHandler client : clients.values()) {
+            client.interrupt();
+        }
+        clients.clear();
     }
 
     /**
@@ -150,7 +147,6 @@ public class MyServer {
             this.address = socket.getRemoteSocketAddress().toString();
             try {
                 while (!socket.isClosed()) {
-                    inputStream = socket.getInputStream();
                     if (inputStream.available() <= 0) continue;
                     byte[] buffer = new byte[1024];
                     int bytesRead = inputStream.read(buffer);
@@ -162,7 +158,6 @@ public class MyServer {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         sendText(gmtTime.toString());
                     } else if (message.equals("bye")) {
-                        System.out.println("server receive bye from " + address);
                         close(address);
                     } else if (message.startsWith("FILE ")) {
                         receiveFile(message.replace("FILE ", "").split(" "));
@@ -182,7 +177,6 @@ public class MyServer {
                 sendText("bye");
                 inputStream.close();
                 outputStream.close();
-                System.out.println("server close client socket");
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -197,7 +191,6 @@ public class MyServer {
         public void sendText(String message) {
             try {
                 if (outputStream != null) {
-                    System.out.println("sendtext: " + message);
                     outputStream.write(message.getBytes());
                     outputStream.flush();
                 }
