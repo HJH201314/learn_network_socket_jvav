@@ -166,9 +166,8 @@ public class MyServer {
                         close(address);
                     } else if (message.startsWith("FILE ")) {
                         receiveFile(message.replace("FILE ", "").split(" "));
-                    } else {
-                        listener.onReceive(socket, message);
                     }
+                    listener.onReceive(socket, message);
                 }
                 listener.onDisconnected(this.address);
             } catch (IOException e) {
