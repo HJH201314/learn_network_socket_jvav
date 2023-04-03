@@ -156,7 +156,7 @@ public class MyServer {
                         ZonedDateTime gmtTime = ZonedDateTime.now(ZoneOffset.UTC);
                         // format the time
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        sendText(gmtTime.toString());
+                        sendText(gmtTime.format(formatter));
                     } else if (message.equals("bye")) {
                         close(address);
                     } else if (message.startsWith("FILE ")) {

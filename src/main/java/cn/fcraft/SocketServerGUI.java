@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.Socket;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -24,8 +27,8 @@ public class SocketServerGUI extends JFrame implements SocketServerListener {
 
     public void creatFrame() {
         setTitle("Socket Server GUI");
-        setMinimumSize(new Dimension(400, 350));
-        setBounds(0,0,400, 350);
+        setMinimumSize(new Dimension(500, 350));
+        setBounds(0,0,500, 350);
         // close the program when the window is closed
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // show the frame in the center of the screen
@@ -141,7 +144,9 @@ public class SocketServerGUI extends JFrame implements SocketServerListener {
 
     public void log(String log) {
         SwingUtilities.invokeLater(() -> {
-            textAreaLog.append(log + "\n");
+            ZonedDateTime gmtTime = ZonedDateTime.now(ZoneOffset.UTC);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            textAreaLog.append(gmtTime.format(formatter) + "  " + log + "\n");
         });
     }
 
