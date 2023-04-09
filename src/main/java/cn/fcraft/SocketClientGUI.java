@@ -53,7 +53,7 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
         componentMap.put("labelPort", labelPort);
 
         // Port 输入
-        JTextField textFieldPort = new JTextField("7891");
+        JTextField textFieldPort = new JTextField("23333");
         container.add(textFieldPort, "growx,wrap");
         componentMap.put("inputPort", textFieldPort);
 
@@ -132,6 +132,7 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
                         JFileChooser fileChooser = new JFileChooser();
                         fileChooser.showOpenDialog(container);
                         File file = fileChooser.getSelectedFile();
+                        if (file == null) return;
                         client.sendFile(file);
                     } else {
                         log("Unknown command: " + cmd);
@@ -144,8 +145,20 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
-        container.add(inputCmd, "span 2,growx,wrap");
+        container.add(inputCmd, "split 2,span 2,growx");
         componentMap.put("inputCmd", inputCmd);
+
+        // File 按钮
+        JButton buttonFile = new JButton("FILE");
+        buttonFile.addActionListener((actionEvent) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.showOpenDialog(container);
+            File file = fileChooser.getSelectedFile();
+            if (file == null) return;
+            client.sendFile(file);
+        });
+        container.add(buttonFile, "wrap");
+        componentMap.put("buttonFile", buttonFile);
 
         updateStatus();
         setVisible(true);
@@ -171,6 +184,8 @@ public class SocketClientGUI extends JFrame implements SocketClientListener {
         buttonStop.setEnabled(client != null && client.isConnected());
         JTextField inputCmd = (JTextField) componentMap.get("inputCmd");
         inputCmd.setEnabled(client != null && client.isConnected());
+        JButton buttonFile = (JButton) componentMap.get("buttonFile");
+        buttonFile.setEnabled(client != null && client.isConnected());
     }
 
     @Override

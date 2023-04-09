@@ -43,7 +43,7 @@ public class SocketServerGUI extends JFrame implements SocketServerListener {
         componentMap.put("labelPort", labelPort);
 
         // Port 输入
-        JTextField textFieldPort = new JTextField("7891");
+        JTextField textFieldPort = new JTextField("23333");
         container.add(textFieldPort, "growx");
         componentMap.put("inputPort", textFieldPort);
 

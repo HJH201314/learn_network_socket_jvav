@@ -12,19 +12,15 @@ import java.time.format.DateTimeFormatter;
 public class MyServer {
 
     private final int port;
-
-    private Boolean isRunning;
-
-    private ServerSocket serverSocket;
-
-    private Thread clientListener;
-
     private final HashMap<String, ClientHandler> clients = new HashMap<>();
-
+    private Boolean isRunning;
+    private ServerSocket serverSocket;
+    private Thread clientListener;
     private SocketServerListener listener;
 
     /**
      * Initialize the server using port.
+     *
      * @param port server port
      */
     public MyServer(int port) {
@@ -88,6 +84,7 @@ public class MyServer {
 
     /**
      * Broadcast a message to all clients.
+     *
      * @param message a string message
      */
     public void broadcast(String message) {
@@ -112,6 +109,7 @@ public class MyServer {
 
     /**
      * Close a client connection.
+     *
      * @param address client address
      */
     public void close(String address) {
@@ -124,11 +122,11 @@ public class MyServer {
      * Handle client connection.
      */
     private class ClientHandler extends Thread {
-        private String address;
         private final Socket socket;
+        private final SocketServerListener listener;
+        private String address;
         private InputStream inputStream = null;
         private OutputStream outputStream = null;
-        private final SocketServerListener listener;
 
         public ClientHandler(Socket socket, SocketServerListener listener) {
             this.socket = socket;
@@ -217,9 +215,7 @@ public class MyServer {
                 System.out.println("File received: " + newFileName);
                 listener.onFileReceive(socket, newFileName);
                 sendText("FILE OK");
-            } catch (IOException e) {
-                return;
-            }
+            } catch (IOException ignore) {}
         }
 
     }
